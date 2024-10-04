@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { database } from '@/lib/firebase';
-import { ref, push, set } from 'firebase/database';
+import { ref, push, set, get } from 'firebase/database';
 
 export async function POST(request: Request) {
   try {
@@ -36,5 +36,22 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  return NextResponse.json(adviceDatabase);
+  try {
+    if (!database) {
+      throw new Error('Firebase database is not initialized');
+    }
+
+    const adviceRef = ref(database, 'advice');
+    const snapshot = await get(adviceRef);
+
+    if (snapshot.exists()) {
+      const adviceData = snapshot.val();
+      return NextResponse.json(adviceData);
+    } else {
+      return NextResponse.json([]);
+    }
+  } catch (error) {
+    console.error('Error fetching advice:', error);
+    return NextResponse.json({ error: 'Failed to fetch advice' }, { status: 500 });
+  }
 }
