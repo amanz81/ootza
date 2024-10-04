@@ -1,8 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage';
-
-console.log('Environment variables:', process.env);
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { getDatabase, Database } from 'firebase/database';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,18 +12,16 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-console.log('Firebase Config:', firebaseConfig);
+let app: FirebaseApp | null = null;
+let database: Database | null = null;
+let storage: FirebaseStorage | null = null;
 
-// Check if all required configuration values are present
-if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.databaseURL || 
-    !firebaseConfig.projectId || !firebaseConfig.storageBucket || 
-    !firebaseConfig.messagingSenderId || !firebaseConfig.appId) {
-    console.error('Missing Firebase configuration. Available config:', firebaseConfig);
-    throw new Error('Missing Firebase configuration. Please check your environment variables.');
+try {
+    app = initializeApp(firebaseConfig);
+    database = getDatabase(app);
+    storage = getStorage(app);
+} catch (error) {
+    console.error('Error initializing Firebase:', error);
 }
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const storage = getStorage(app);
-
-export { database, storage };
+export { app, database, storage };
