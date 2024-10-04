@@ -4,6 +4,10 @@ import { ref, push, set } from 'firebase/database';
 
 export async function POST(request: Request) {
   try {
+    if (!database) {
+      throw new Error('Firebase database is not initialized');
+    }
+
     const body = await request.json();
     console.log('New advice received:', body);
 

@@ -4,7 +4,10 @@ import { ref, get } from 'firebase/database';
 
 export async function GET() {
   try {
-    console.log('Attempting to fetch advice from database');
+    if (!database) {
+      throw new Error('Firebase database is not initialized');
+    }
+
     const adviceRef = ref(database, 'advice');
     const snapshot = await get(adviceRef);
     
@@ -14,10 +17,8 @@ export async function GET() {
         id: key,
         ...(value as object)
       }));
-      console.log('Advice fetched successfully:', adviceArray);
       return NextResponse.json(adviceArray);
     } else {
-      console.log('No advice found in database');
       return NextResponse.json([]);
     }
   } catch (error) {

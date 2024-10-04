@@ -10,6 +10,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
   }
 
   try {
+    if (!database) {
+      throw new Error('Firebase database is not initialized');
+    }
+
     const body = await request.json();
     const unlike = body.unlike || false;
 
