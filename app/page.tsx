@@ -63,8 +63,8 @@ export default function AdviceShare() {
   };
 
   const handleSubmitAdvice = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setIsSubmitting(true)
+    event.preventDefault();
+    setIsSubmitting(true);
     console.log('Starting submission process');
     try {
       console.log('Sending request to /api/share-advice');
@@ -91,7 +91,7 @@ export default function AdviceShare() {
         title: "Success",
         description: "Your advice has been shared successfully!",
       });
-      
+
       console.log('Resetting form');
       setAdvice("");
       setSelectedCategory("career");
@@ -109,7 +109,7 @@ export default function AdviceShare() {
       console.log('Setting isSubmitting to false');
       setIsSubmitting(false);
     }
-  }
+  };
 
   const handleLike = async (adviceId: string) => {
     if (!adviceId) {
