@@ -43,7 +43,7 @@ export async function GET() {
 
     const adviceRef = ref(database, 'advice');
     const snapshot = await get(adviceRef);
-
+ g
     if (snapshot.exists()) {
       const adviceData = snapshot.val();
       return NextResponse.json(adviceData);
