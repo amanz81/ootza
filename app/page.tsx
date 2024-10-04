@@ -123,7 +123,7 @@ export default function AdviceShare() {
     }
 
     try {
-      const isLiked = likedAdvice.includes(adviceId);
+      const isLiked = likedAdvice?.includes(adviceId) || false;
       const response = await fetch(`/api/like-advice/${adviceId}`, {
         method: 'POST',
         headers: {
@@ -148,9 +148,9 @@ export default function AdviceShare() {
 
       // Update liked advice in local storage
       if (isLiked) {
-        setLikedAdvice(prev => prev.filter(id => id !== adviceId));
+        setLikedAdvice(prev => (prev ? prev.filter(id => id !== adviceId) : []));
       } else {
-        setLikedAdvice(prev => [...prev, adviceId]);
+        setLikedAdvice(prev => (prev ? [...prev, adviceId] : [adviceId]));
       }
 
       toast({
@@ -237,10 +237,10 @@ export default function AdviceShare() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className={`bg-white hover:bg-purple-100 text-purple-700 border-purple-300 hover:border-purple-500 transition-all duration-200 ${likedAdvice.includes(advice.id) ? 'bg-purple-200' : ''}`}
+                        className={`bg-white hover:bg-purple-100 text-purple-700 border-purple-300 hover:border-purple-500 transition-all duration-200 ${likedAdvice?.includes(advice.id) ? 'bg-purple-200' : ''}`}
                         onClick={() => handleLike(advice.id)}
                       >
-                        <ThumbsUp className={`mr-2 h-4 w-4 ${likedAdvice.includes(advice.id) ? 'fill-purple-700' : ''}`} /> {advice.likes}
+                        <ThumbsUp className={`mr-2 h-4 w-4 ${likedAdvice?.includes(advice.id) ? 'fill-purple-700' : ''}`} /> {advice.likes}
                       </Button>
                     </CardFooter>
                   </Card>
