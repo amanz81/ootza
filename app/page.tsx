@@ -34,8 +34,8 @@ export default function AdviceShare() {
   const categories = ["Career", "Relationships", "Health", "Finance", "Personal Growth"]
 
   useEffect(() => {
-    fetchAdvice()
-  }, [])
+    fetchAdvice();
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchAdvice = async () => {
     try {
