@@ -4,29 +4,23 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
   color: #666;
   transition: all 0.3s ease;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: #f0f0f0;
 }
 
 .likeButton:hover {
   color: #ff4136;
-  background-color: #e0e0e0;
 }
 
-.liked {
+.likeButton.liked {
   color: #ff4136;
-  background-color: #ffe0e0;
 }
 
-.icon {
+.likeIcon {
   font-size: 1.2rem;
+  margin-right: 0.3rem;
 }
 
-.count {
+.likeCount {
   font-size: 0.9rem;
-  font-weight: bold;
 }

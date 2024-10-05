@@ -1,34 +1,26 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/LikeButton.module.css';
-import { addLike, removeLike } from '../lib/api';
+import { likeAdvice } from '../lib/api';
 
-const LikeButton = ({ adviceId, likes, onLike }) => {
-  const [hasLiked, setHasLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
+const LikeButton = ({ adviceId, initialLikes }) => {
+  const [likes, setLikes] = useState(initialLikes);
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = async () => {
-    try {
-      if (hasLiked) {
-        await removeLike(adviceId);
-        setLikeCount(prevCount => prevCount - 1);
-      } else {
-        await addLike(adviceId);
-        setLikeCount(prevCount => prevCount + 1);
-      }
-      setHasLiked(!hasLiked);
-      if (onLike) onLike(adviceId, likeCount + (hasLiked ? -1 : 1));
-    } catch (error) {
-      console.error('Error updating like:', error);
+    if (!isLiked) {
+      const updatedLikes = await likeAdvice(adviceId);
+      setLikes(updatedLikes);
+      setIsLiked(true);
     }
   };
 
   return (
     <button 
-      className={`${styles.likeButton} ${hasLiked ? styles.liked : ''}`} 
+      className={`${styles.likeButton} ${isLiked ? styles.liked : ''}`} 
       onClick={handleLike}
     >
-      <span className={styles.icon}>❤</span>
-      <span className={styles.count}>{likeCount}</span>
+      <span className={styles.likeIcon}>❤</span>
+      <span className={styles.likeCount}>{likes}</span>
     </button>
   );
 };
