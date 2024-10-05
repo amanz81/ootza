@@ -57,8 +57,8 @@
 
 .adviceGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));  /* Increased from 300px */
+  gap: 2rem;
 }
 
 @media (max-width: 600px) {
@@ -88,24 +88,24 @@
 }
 
 .card h2 {
-  font-size: 2.5rem;  /* Increased from 2rem */
+  font-size: 3.5rem;  /* Increased from 3rem */
   margin-bottom: 1rem;
   color: #333;
 }
 
 .card p {
-  font-size: 2rem;  /* Increased from 1.6rem */
-  line-height: 1.3;  /* Slightly reduced to accommodate larger text */
+  font-size: 2.8rem;  /* Increased from 2.5rem, now equivalent to 28px */
+  line-height: 1.3;
   color: #555;
 }
 
 .categoryTag {
   display: inline-block;
-  padding: 0.4rem 1rem;  /* Slightly increased padding */
+  padding: 0.5rem 1.2rem;
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
   border-radius: 20px;
-  font-size: 1.4rem;  /* Increased from 1.2rem */
+  font-size: 2.2rem;  /* Increased from 1.8rem, now equivalent to 22px */
   font-weight: 600;
   color: #fff;
   background-color: #4a90e2;
@@ -120,7 +120,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 2.2rem;  /* Increased from 1.8rem */
+  font-size: 2.8rem;  /* Increased from 2.5rem */
   color: #999;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -206,8 +206,8 @@
 
 .shareAdviceButtonHeader {
   font-family: 'Varela Round', sans-serif;
-  padding: 0.6rem 1.2rem;
-  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
   color: #fff;
   background: linear-gradient(45deg, #4a90e2, #3a7bc8);
@@ -221,4 +221,123 @@
 .shareAdviceButtonHeader:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add these new styles for the popup */
+.shareAdviceOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.shareAdvicePopup {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shareAdviceTitle {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.shareAdviceForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.shareAdviceTextarea,
+.shareAdviceInput {
+  font-size: 1.8rem;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Varela Round', sans-serif;
+}
+
+.shareAdviceTextarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.shareAdviceButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.shareAdviceButton,
+.shareAdviceCloseButton {
+  font-size: 1.8rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.shareAdviceButton {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.shareAdviceButton:hover {
+  background-color: #3a7bc8;
+}
+
+.shareAdviceCloseButton {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.shareAdviceCloseButton:hover {
+  background-color: #e0e0e0;
+}
+
+/* Add these new styles for the category selection */
+.categorySelection {
+  margin-bottom: 1rem;
+}
+
+.categoryLabel {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.categorySelect {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  font-family: 'Varela Round', sans-serif;
+  margin-bottom: 1rem;
+}
+
+/* Add this new style for the custom category input */
+.customCategoryInput {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  font-family: 'Varela Round', sans-serif;
 }

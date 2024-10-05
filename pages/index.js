@@ -29,6 +29,10 @@ export default function Home() {
     setShowShareAdvice(true);
   };
 
+  const handleCloseShareAdvice = () => {
+    setShowShareAdvice(false);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -61,11 +65,14 @@ export default function Home() {
         </h1>
 
         {showShareAdvice && (
-          <ShareAdvice onSubmit={(newAdvice) => {
-            // Handle the new advice submission here
-            setShowShareAdvice(false);
-            // You might want to update the allAdvice state or refetch advice here
-          }} />
+          <ShareAdvice 
+            onSubmit={(newAdvice) => {
+              // Handle the new advice submission here
+              setShowShareAdvice(false);
+              // You might want to update the allAdvice state or refetch advice here
+            }} 
+            onClose={handleCloseShareAdvice}
+          />
         )}
 
         {topAdvice.length > 0 && (
