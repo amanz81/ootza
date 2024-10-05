@@ -14,7 +14,7 @@ const ShareAdvice = ({ onSubmit }) => {
 
   return (
     <div className={styles.shareAdviceContainer}>
-      <h2 className={styles.shareAdviceTitle}>Share Your Advice</h2>
+      <h2 className={styles.sectionTitle}>Share Your Advice</h2>
       <form onSubmit={handleSubmit} className={styles.shareAdviceForm}>
         <textarea
           value={advice}
