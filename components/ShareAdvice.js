@@ -27,7 +27,7 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
         setIsSubmitting(false);
       }
     }
-  }, [advice, selectedCategory, customCategory, onAddAdvice, onClose]);
+  }, [advice, selectedCategory, customCategory, onAddAdvice, onClose, isSubmitting]);
 
   useEffect(() => {
     return () => {
