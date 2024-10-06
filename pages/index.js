@@ -4,35 +4,34 @@ import Header from '../components/Header';
 import styles from '../styles/Home.module.css';
 import Head from 'next/head';
 import ShareAdvice from '../components/ShareAdvice';
-import { db, auth } from '../lib/firebase';
-import { ref, push, set, onValue } from 'firebase/database';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { db } from '../lib/firebase';
+import { ref, push, set, onValue, update } from 'firebase/database';
 
 export default function Home() {
   const [advice, setAdvice] = useState([]);
   const [showShareAdvice, setShowShareAdvice] = useState(false);
 
   useEffect(() => {
-    if (!db) {
-      console.error('Realtime Database instance not available');
-      return;
-    }
-
     const adviceRef = ref(db, 'advice');
 
-    // Fetch all advice and listen for changes
     const unsubscribe = onValue(adviceRef, (snapshot) => {
       const data = snapshot.val();
-      const adviceList = data ? Object.entries(data).map(([key, value]) => ({id: key, ...value})) : [];
-      setAdvice(prevAdvice => {
-        // Merge new data with existing data, prioritizing new data
-        const mergedAdvice = [...adviceList, ...prevAdvice];
-        // Remove duplicates based on id
-        return Array.from(new Map(mergedAdvice.map(item => [item.id, item])).values());
-      });
+      console.log('Received data from Firebase:', data);
+      if (data) {
+        const adviceList = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value
+        }));
+        console.log('Processed advice list:', adviceList);
+        setAdvice(adviceList);
+      } else {
+        console.log('No data received from Firebase');
+        setAdvice([]);
+      }
+    }, (error) => {
+      console.error("Error fetching advice:", error);
     });
 
-    // Cleanup function to unsubscribe from the listener
     return () => unsubscribe();
   }, []);
 
@@ -45,40 +44,44 @@ export default function Home() {
   };
 
   const handleAddAdvice = async (newAdvice) => {
-    if (!db) {
-      console.error('Realtime Database instance not available');
-      return;
-    }
     try {
       const adviceRef = ref(db, 'advice');
       const newAdviceRef = push(adviceRef);
-      const newAdviceId = newAdviceRef.key;
       const adviceWithMetadata = {
         ...newAdvice,
-        id: newAdviceId,
+        text: newAdvice.content, // Add this line to ensure consistency
         createdAt: Date.now(),
         likes: 0
       };
       await set(newAdviceRef, adviceWithMetadata);
-      
-      // Update local state
-      setAdvice(prevAdvice => [adviceWithMetadata, ...prevAdvice]);
-      
-      // Close the form after successful submission
+      console.log('New advice added:', adviceWithMetadata);
       handleCloseShareAdvice();
     } catch (error) {
       console.error('Error adding advice:', error);
-      // You might want to show an error message to the user here
     }
   };
 
-  const handleLike = (adviceId) => {
-    // This function is now just for logging purposes
-    console.log(`Advice ${adviceId} liked`);
+  const handleLike = async (adviceId) => {
+    try {
+      const adviceRef = ref(db, `advice/${adviceId}`);
+      const currentAdvice = advice.find(a => a.id === adviceId);
+      if (currentAdvice) {
+        await update(adviceRef, {
+          likes: (currentAdvice.likes || 0) + 1
+        });
+        console.log(`Advice ${adviceId} liked`);
+      }
+    } catch (error) {
+      console.error('Error updating likes:', error);
+    }
   };
 
   const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt).slice(0, 20);
   const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 5);
+
+  console.log('Rendering with advice:', advice);
+  console.log('Latest advice:', latestAdvice);
+  console.log('Top advice:', topAdvice);
 
   return (
     <div className={styles.container}>
@@ -100,6 +103,13 @@ export default function Home() {
             onClose={handleCloseShareAdvice}
           />
         )}
+
+        <div>
+          <h2>Debug Info:</h2>
+          <p>Total advice count: {advice.length}</p>
+          <p>Latest advice count: {latestAdvice.length}</p>
+          <p>Top advice count: {topAdvice.length}</p>
+        </div>
 
         {topAdvice.length > 0 && (
           <section id="top-advice" className={styles.adviceSection}>

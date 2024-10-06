@@ -7,6 +7,11 @@ const AdviceCard = ({ advice, onLike }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = async () => {
+    if (!advice || !advice.id) {
+      console.error('Cannot like advice: Invalid advice object', advice);
+      return;
+    }
+
     const adviceRef = ref(db, `advice/${advice.id}`);
     try {
       await runTransaction(adviceRef, (currentAdvice) => {
@@ -22,12 +27,22 @@ const AdviceCard = ({ advice, onLike }) => {
     }
   };
 
-  if (!advice.content) return null; // Don't render cards without content
+  if (!advice) {
+    console.error('Invalid advice object: advice is undefined or null');
+    return null;
+  }
+
+  const adviceContent = advice.content || advice.text; // Use 'text' if 'content' is not available
+
+  if (!adviceContent) {
+    console.error('Invalid advice object: missing content or text', advice);
+    return null;
+  }
 
   return (
     <div className={styles.card}>
-      <h3 className={styles.cardCategory}>{advice.category}</h3>
-      <p>{advice.content}</p>
+      <h3 className={styles.cardCategory}>{advice.category || 'Uncategorized'}</h3>
+      <p>{adviceContent}</p>
       <div className={styles.cardFooter}>
         <span className={styles.likeCount}>{advice.likes || 0}</span>
         <button 
