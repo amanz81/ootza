@@ -12,24 +12,23 @@
 }
 
 .main {
-  padding-top: 7rem; /* Increased from 5rem to account for the header height */
-  padding: 5rem 0;
+  padding-top: 80px; /* Increased to account for the header height */
+  padding-bottom: 5rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
   align-items: center;
   width: 100%;
   max-width: 1200px;
 }
 
 .title {
-  margin: 0;
+  margin: 2rem 0; /* Added margin to separate from the header */
   line-height: 1.15;
   font-size: 4rem;
   text-align: center;
   color: #333;
-  margin-bottom: 2rem;
   font-weight: 700;
   font-family: 'Pacifico', cursive;
 }
@@ -204,7 +203,7 @@
   width: 100%;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem; /* Reduced padding */
   position: fixed;
   top: 0;
   left: 0;
@@ -212,6 +211,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 60px; /* Set a fixed height */
 }
 
 .headerContent {
@@ -226,7 +226,7 @@
   display: flex;
   align-items: center;
   font-family: 'Gochi Hand', cursive;
-  font-size: 2.5rem;
+  font-size: 2rem; /* Reduced from 2.5rem */
   color: #4a90e2;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -234,7 +234,7 @@
 
 .logoIcon {
   margin-right: 0.5rem;
-  font-size: 3rem;
+  font-size: 2.5rem; /* Reduced from 3rem */
 }
 
 .logoText {
@@ -252,7 +252,7 @@
 
 .navLink {
   font-family: 'Varela Round', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem; /* Reduced from 1.2rem */
   color: #555;
   text-decoration: none;
   margin-left: 1.5rem;
@@ -268,8 +268,8 @@
 
 .shareAdviceButtonHeader {
   font-family: 'Varela Round', sans-serif;
-  padding: 0.8rem 1.5rem;
-  font-size: 1.2rem;
+  padding: 0.6rem 1.2rem; /* Reduced padding */
+  font-size: 1rem; /* Reduced from 1.2rem */
   font-weight: 600;
   color: #fff;
   background: linear-gradient(45deg, #4a90e2, #3a7bc8);
