@@ -77,7 +77,7 @@ export default function Home() {
   };
 
   const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt);
-  const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 5);
+  const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 20);
 
   console.log('Rendering with advice:', advice);
   console.log('Latest advice:', latestAdvice);
@@ -104,11 +104,22 @@ export default function Home() {
           />
         )}
 
-        <div>
-          <h2>Debug Info:</h2>
-          <p>Total advice count: {advice.length}</p>
-          <p>Latest advice count: {latestAdvice.length}</p>
-          <p>Top advice count: {topAdvice.length}</p>
+        <div className={styles.statsSection}>
+          <h2 className={styles.statsSectionTitle}>Ootza! Stats</h2>
+          <div className={styles.statsGrid}>
+            <div className={styles.statCard}>
+              <h3>Total Advice</h3>
+              <p>{advice.length}</p>
+            </div>
+            <div className={styles.statCard}>
+              <h3>Latest Advice</h3>
+              <p>{latestAdvice.length}</p>
+            </div>
+            <div className={styles.statCard}>
+              <h3>Top Advice</h3>
+              <p>{topAdvice.length}</p>
+            </div>
+          </div>
         </div>
 
         {topAdvice.length > 0 && (

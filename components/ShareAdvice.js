@@ -8,7 +8,7 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (advice.trim() && !isSubmitting) {
+    if (advice.trim() && !isSubmitting && advice.length <= 200) {
       setIsSubmitting(true);
       console.log('Submitting advice:', { content: advice, category: category });
       try {
@@ -45,10 +45,14 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
         <form onSubmit={handleSubmit} className={styles.shareAdviceForm}>
           <textarea
             value={advice}
-            onChange={(e) => setAdvice(e.target.value)}
-            placeholder="Enter your advice here..."
+            onChange={(e) => setAdvice(e.target.value.slice(0, 200))}
+            placeholder="Enter your advice here (max 200 characters)..."
             className={styles.shareAdviceTextarea}
+            maxLength={200}
           />
+          <div className={styles.characterCount}>
+            {advice.length}/200 characters
+          </div>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -66,7 +70,11 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
             <option value="Hobbies">Hobbies</option>
           </select>
           <div className={styles.shareAdviceButtons}>
-            <button type="submit" className={styles.shareAdviceButton} disabled={isSubmitting}>
+            <button 
+              type="submit" 
+              className={styles.shareAdviceButton} 
+              disabled={isSubmitting || advice.length === 0 || advice.length > 200}
+            >
               {isSubmitting ? 'Submitting...' : 'Submit Advice'}
             </button>
             <button type="button" onClick={onClose} className={styles.shareAdviceCloseButton}>
