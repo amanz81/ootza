@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Varela+Round&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Varela+Round&family=Pacifico&family=Roboto&display=swap');
 
 .container {
   min-height: 100vh;
@@ -26,11 +26,24 @@
 .title {
   margin: 0;
   line-height: 1.15;
-  font-size: 5rem;
+  font-size: 4rem;
   text-align: center;
   color: #333;
   margin-bottom: 2rem;
   font-weight: 700;
+  font-family: 'Pacifico', cursive;
+}
+
+.welcomeText {
+  color: #555;
+}
+
+.ootzaText {
+  background: linear-gradient(45deg, #4a90e2, #3a7bc8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #4a90e2; /* Fallback color */
 }
 
 .adviceSection {

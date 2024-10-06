@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Ootza! - Share and Discover Advice</title>
+        <title>Ootza</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -85,7 +85,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Ootza!
+          <span className={styles.welcomeText}>Welcome to</span> <span className={styles.ootzaText}>Ootza!</span>
         </h1>
 
         {showShareAdvice && (
