@@ -16,16 +16,13 @@ export default function Home() {
 
     const unsubscribe = onValue(adviceRef, (snapshot) => {
       const data = snapshot.val();
-      console.log('Received data from Firebase:', data);
       if (data) {
         const adviceList = Object.entries(data).map(([key, value]) => ({
           id: key,
           ...value
         }));
-        console.log('Processed advice list:', adviceList);
         setAdvice(adviceList);
       } else {
-        console.log('No data received from Firebase');
         setAdvice([]);
       }
     }, (error) => {
@@ -54,7 +51,6 @@ export default function Home() {
         likes: 0
       };
       await set(newAdviceRef, adviceWithMetadata);
-      console.log('New advice added:', adviceWithMetadata);
       handleCloseShareAdvice();
     } catch (error) {
       console.error('Error adding advice:', error);
@@ -69,7 +65,6 @@ export default function Home() {
         await update(adviceRef, {
           likes: (currentAdvice.likes || 0) + 1
         });
-        console.log(`Advice ${adviceId} liked`);
       }
     } catch (error) {
       console.error('Error updating likes:', error);
@@ -78,10 +73,6 @@ export default function Home() {
 
   const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt);
   const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 20);
-
-  console.log('Rendering with advice:', advice);
-  console.log('Latest advice:', latestAdvice);
-  console.log('Top advice:', topAdvice);
 
   return (
     <div className={styles.container}>

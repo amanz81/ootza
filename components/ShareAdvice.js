@@ -8,22 +8,17 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (advice.trim() && !isSubmitting && advice.length <= 200) {
+    if (advice.trim() && !isSubmitting && advice.length <= 100) {
       setIsSubmitting(true);
-      console.log('Submitting advice:', { content: advice, category: category });
       try {
         await onAddAdvice({
           content: advice,
           category: category,
         });
-        console.log('Advice submitted successfully');
-        // Reset form state
         setAdvice('');
         setCategory('General');
-        // Close the form
         onClose();
       } catch (error) {
-        console.error('Error submitting advice:', error);
         // You might want to show an error message to the user here
       } finally {
         setIsSubmitting(false);
@@ -33,7 +28,6 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
 
   useEffect(() => {
     return () => {
-      // This cleanup function will run when the component unmounts
       setIsSubmitting(false);
     };
   }, []);
@@ -45,13 +39,13 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
         <form onSubmit={handleSubmit} className={styles.shareAdviceForm}>
           <textarea
             value={advice}
-            onChange={(e) => setAdvice(e.target.value.slice(0, 200))}
-            placeholder="Enter your advice here (max 200 characters)..."
+            onChange={(e) => setAdvice(e.target.value.slice(0, 100))}
+            placeholder="Enter your advice here (max 100 characters)..."
             className={styles.shareAdviceTextarea}
-            maxLength={200}
+            maxLength={100}
           />
           <div className={styles.characterCount}>
-            {advice.length}/200 characters
+            {advice.length}/100 characters
           </div>
           <select
             value={category}
@@ -72,12 +66,16 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
           <div className={styles.shareAdviceButtons}>
             <button 
               type="submit" 
-              className={styles.shareAdviceButton} 
-              disabled={isSubmitting || advice.length === 0 || advice.length > 200}
+              className={`${styles.shareAdviceButton} ${styles.modernButton}`}
+              disabled={isSubmitting || advice.length === 0 || advice.length > 100}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Advice'}
+              {isSubmitting ? 'Sharing...' : 'Share Advice'}
             </button>
-            <button type="button" onClick={onClose} className={styles.shareAdviceCloseButton}>
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className={`${styles.shareAdviceCloseButton} ${styles.modernButton}`}
+            >
               Cancel
             </button>
           </div>

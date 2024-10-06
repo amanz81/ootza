@@ -482,3 +482,42 @@
   font-weight: 700;
   color: #333;
 }
+
+.modernButton {
+  font-size: 1.6rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.shareAdviceButton.modernButton {
+  background: linear-gradient(45deg, #4a90e2, #3a7bc8);
+  color: white;
+}
+
+.shareAdviceButton.modernButton:hover:not(:disabled) {
+  background: linear-gradient(45deg, #3a7bc8, #2a6cb8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shareAdviceButton.modernButton:disabled {
+  background: #a0c8ff;
+  cursor: not-allowed;
+}
+
+.shareAdviceCloseButton.modernButton {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.shareAdviceCloseButton.modernButton:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
