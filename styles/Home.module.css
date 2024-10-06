@@ -526,39 +526,52 @@
 
 .modernButton {
   font-size: 1.6rem;
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 25px;
+  border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 600;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .shareAdviceButton.modernButton {
+  min-width: 150px;
+}
+
+.primaryButton {
   background: linear-gradient(45deg, #4a90e2, #3a7bc8);
   color: white;
 }
 
-.shareAdviceButton.modernButton:hover:not(:disabled) {
+.primaryButton:hover:not(:disabled) {
   background: linear-gradient(45deg, #3a7bc8, #2a6cb8);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.shareAdviceButton.modernButton:disabled {
+.primaryButton:disabled {
   background: #a0c8ff;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.shareAdviceCloseButton.modernButton {
-  background: #f0f0f0;
+.secondaryButton {
+  background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
   color: #333;
 }
 
-.shareAdviceCloseButton.modernButton:hover {
-  background: #e0e0e0;
+.secondaryButton:hover {
+  background: linear-gradient(45deg, #e0e0e0, #d0d0d0);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.shareAdviceButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }

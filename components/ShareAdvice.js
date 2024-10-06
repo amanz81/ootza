@@ -75,7 +75,7 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
           <div className={styles.shareAdviceButtons}>
             <button 
               type="submit" 
-              className={`${styles.shareAdviceButton} ${styles.primaryButton}`}
+              className={`${styles.shareAdviceButton} ${styles.modernButton} ${styles.primaryButton}`}
               disabled={isSubmitting || advice.length === 0 || advice.length > 200}  // Updated to 200
             >
               {isSubmitting ? 'Sharing...' : 'Share Advice'}
@@ -83,7 +83,7 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
             <button 
               type="button" 
               onClick={onClose} 
-              className={`${styles.shareAdviceButton} ${styles.secondaryButton}`}
+              className={`${styles.shareAdviceButton} ${styles.modernButton} ${styles.secondaryButton}`}
             >
               Cancel
             </button>
