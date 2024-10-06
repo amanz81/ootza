@@ -1,28 +1,39 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdviceCard from '../components/AdviceCard';
 import Header from '../components/Header';
 import styles from '../styles/Home.module.css';
-import { getAdvice, getTopAdvice, getAllAdvice } from '../lib/api';
 import Head from 'next/head';
 import ShareAdvice from '../components/ShareAdvice';
-import Link from 'next/link'; // Import Link from Next.js
+import { db, auth } from '../lib/firebase';
+import { ref, push, set, onValue } from 'firebase/database';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Home() {
-  const [latestAdvice, setLatestAdvice] = useState([]);
-  const [topAdvice, setTopAdvice] = useState([]);
-  const [allAdvice, setAllAdvice] = useState([]);
+  const [advice, setAdvice] = useState([]);
   const [showShareAdvice, setShowShareAdvice] = useState(false);
 
   useEffect(() => {
-    async function fetchAdvice() {
-      const latest = await getAdvice(20);
-      const top = await getTopAdvice(5);
-      const all = await getAllAdvice();
-      setLatestAdvice(latest);
-      setTopAdvice(top);
-      setAllAdvice(all);
+    if (!db) {
+      console.error('Realtime Database instance not available');
+      return;
     }
-    fetchAdvice();
+
+    const adviceRef = ref(db, 'advice');
+
+    // Fetch all advice and listen for changes
+    const unsubscribe = onValue(adviceRef, (snapshot) => {
+      const data = snapshot.val();
+      const adviceList = data ? Object.entries(data).map(([key, value]) => ({id: key, ...value})) : [];
+      setAdvice(prevAdvice => {
+        // Merge new data with existing data, prioritizing new data
+        const mergedAdvice = [...adviceList, ...prevAdvice];
+        // Remove duplicates based on id
+        return Array.from(new Map(mergedAdvice.map(item => [item.id, item])).values());
+      });
+    });
+
+    // Cleanup function to unsubscribe from the listener
+    return () => unsubscribe();
   }, []);
 
   const handleShareAdvice = () => {
@@ -33,6 +44,42 @@ export default function Home() {
     setShowShareAdvice(false);
   };
 
+  const handleAddAdvice = async (newAdvice) => {
+    if (!db) {
+      console.error('Realtime Database instance not available');
+      return;
+    }
+    try {
+      const adviceRef = ref(db, 'advice');
+      const newAdviceRef = push(adviceRef);
+      const newAdviceId = newAdviceRef.key;
+      const adviceWithMetadata = {
+        ...newAdvice,
+        id: newAdviceId,
+        createdAt: Date.now(),
+        likes: 0
+      };
+      await set(newAdviceRef, adviceWithMetadata);
+      
+      // Update local state
+      setAdvice(prevAdvice => [adviceWithMetadata, ...prevAdvice]);
+      
+      // Close the form after successful submission
+      handleCloseShareAdvice();
+    } catch (error) {
+      console.error('Error adding advice:', error);
+      // You might want to show an error message to the user here
+    }
+  };
+
+  const handleLike = (adviceId) => {
+    // This function is now just for logging purposes
+    console.log(`Advice ${adviceId} liked`);
+  };
+
+  const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt).slice(0, 20);
+  const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 5);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -40,24 +87,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <Link href="/">
-            <a className={styles.logo}>Ootza!</a>
-          </Link>
-          <nav className={styles.nav}>
-            <Link href="/#all-advice">
-              <a className={styles.navLink}>All Advices</a>
-            </Link>
-            <Link href="/#top-advice">
-              <a className={styles.navLink}>Top Advice</a>
-            </Link>
-            <button className={styles.shareAdviceButtonHeader} onClick={handleShareAdvice}>
-              Share Advice
-            </button>
-          </nav>
-        </div>
-      </header>
+      <Header onShareAdvice={handleShareAdvice} />
 
       <main className={styles.main}>
         <h1 className={styles.title}>
@@ -66,11 +96,7 @@ export default function Home() {
 
         {showShareAdvice && (
           <ShareAdvice 
-            onSubmit={(newAdvice) => {
-              // Handle the new advice submission here
-              setShowShareAdvice(false);
-              // You might want to update the allAdvice state or refetch advice here
-            }} 
+            onAddAdvice={handleAddAdvice}
             onClose={handleCloseShareAdvice}
           />
         )}
@@ -80,35 +106,24 @@ export default function Home() {
             <h2 className={styles.sectionTitle}>Top Advice</h2>
             <div className={styles.adviceGrid}>
               {topAdvice.map((advice) => (
-                <AdviceCard key={advice.id} advice={advice} />
+                <AdviceCard key={advice.id} advice={advice} onLike={handleLike} />
               ))}
             </div>
           </section>
         )}
 
         {latestAdvice.length > 0 && (
-          <section className={styles.adviceSection}>
+          <section id="latest-advice" className={styles.adviceSection}>
             <h2 className={styles.sectionTitle}>Latest Advice</h2>
             <div className={styles.adviceGrid}>
               {latestAdvice.map((advice) => (
-                <AdviceCard key={advice.id} advice={advice} />
+                <AdviceCard key={advice.id} advice={advice} onLike={handleLike} />
               ))}
             </div>
           </section>
         )}
 
-        {allAdvice.length > 0 && (
-          <section id="all-advice" className={styles.adviceSection}>
-            <h2 className={styles.sectionTitle}>All Advices</h2>
-            <div className={styles.adviceGrid}>
-              {allAdvice.map((advice) => (
-                <AdviceCard key={advice.id} advice={advice} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {latestAdvice.length === 0 && topAdvice.length === 0 && allAdvice.length === 0 && (
+        {advice.length === 0 && (
           <p className={styles.noAdvice}>No advice available at the moment. Be the first to share some wisdom!</p>
         )}
       </main>

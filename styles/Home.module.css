@@ -57,8 +57,8 @@
 
 .adviceGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));  /* Increased from 300px */
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 3fr));  /* Increased from 320px */
+  gap: 2.5rem;  /* Increased from 2rem for more spacing between cards */
 }
 
 @media (max-width: 600px) {
@@ -80,6 +80,8 @@
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
@@ -87,16 +89,20 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.card h2 {
-  font-size: 3.5rem;  /* Increased from 3rem */
+.cardCategory {
+  font-size: 2.8rem;  /* Increased from previous size */
   margin-bottom: 1rem;
-  color: #333;
+  color: #4a90e2;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .card p {
-  font-size: 2.8rem;  /* Increased from 2.5rem, now equivalent to 28px */
-  line-height: 1.3;
+  font-size: 2rem;  /* Slightly reduced from 2.8rem for better contrast with category */
+  line-height: 1.4;
   color: #555;
+  flex-grow: 1;
 }
 
 .categoryTag {
@@ -116,22 +122,51 @@
   background-color: #3a7bc8;
 }
 
+.cardFooter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.likeCount {
+  font-size: 1.6rem;  /* Slightly increased */
+  color: #666;
+  margin-right: 0.5rem;
+}
+
 .likeButton {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 2.8rem;  /* Increased from 2.5rem */
-  color: #999;
-  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
 }
 
 .likeButton:hover {
-  color: #ff4136;
   transform: scale(1.1);
 }
 
-.likeButton.liked {
-  color: #ff4136;
+.likeButton:disabled {
+  cursor: default;
+}
+
+.likeIcon {
+  width: 28px;  /* Increased from 24px */
+  height: 28px;  /* Increased from 24px */
+  fill: #ccc;
+  transition: fill 0.3s ease;
+}
+
+.likeButton:hover .likeIcon {
+  fill: #ff4136;
+}
+
+.likeButton.liked .likeIcon {
+  fill: #ff4136;
 }
 
 .shareAdviceButton {
@@ -162,24 +197,35 @@
   left: 0;
   z-index: 1000;
   display: flex;
-  justify-content: center; /* Changed from space-between to center */
+  justify-content: center;
   align-items: center;
 }
 
 .headerContent {
   width: 100%;
-  max-width: 1200px; /* Match the max-width of .main */
+  max-width: 1200px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   font-family: 'Gochi Hand', cursive;
   font-size: 2.5rem;
   color: #4a90e2;
   text-decoration: none;
   transition: color 0.3s ease;
+}
+
+.logoIcon {
+  margin-right: 0.5rem;
+  font-size: 3rem;
+}
+
+.logoText {
+  font-weight: bold;
 }
 
 .logo:hover {
@@ -198,16 +244,19 @@
   text-decoration: none;
   margin-left: 1.5rem;
   transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
 }
 
 .navLink:hover {
   color: #4a90e2;
+  background-color: #f0f4f8;
 }
 
 .shareAdviceButtonHeader {
   font-family: 'Varela Round', sans-serif;
   padding: 0.8rem 1.5rem;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #fff;
   background: linear-gradient(45deg, #4a90e2, #3a7bc8);
@@ -221,6 +270,24 @@
 .shareAdviceButtonHeader:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .navLink, .shareAdviceButtonHeader {
+    margin-left: 0;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 /* Add these new styles for the popup */
@@ -340,4 +407,36 @@
   border-radius: 5px;
   background-color: white;
   font-family: 'Varela Round', sans-serif;
+}
+
+/* New styles for the ShareAdvice component */
+.shareAdviceContainer {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.adviceInput {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.submitButton {
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #0051bb;
 }

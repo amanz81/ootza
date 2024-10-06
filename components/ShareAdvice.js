@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../styles/Home.module.css';
 
-const ShareAdvice = ({ onSubmit, onClose }) => {
+const ShareAdvice = ({ onAddAdvice, onClose }) => {
   const [advice, setAdvice] = useState('');
-  const [category, setCategory] = useState('');
-  const [customCategory, setCustomCategory] = useState('');
+  const [category, setCategory] = useState('General');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const predefinedCategories = ['Health', 'Relationships', 'Career', 'Finance', 'Personal Growth', 'Other'];
-
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    const finalCategory = category === 'custom' ? customCategory : category;
-    onSubmit({ advice, category: finalCategory });
-    setAdvice('');
-    setCategory('');
-    setCustomCategory('');
-  };
+    if (advice.trim() && !isSubmitting) {
+      setIsSubmitting(true);
+      console.log('Submitting advice:', { content: advice, category: category });
+      try {
+        await onAddAdvice({
+          content: advice,
+          category: category,
+        });
+        console.log('Advice submitted successfully');
+        // Reset form state
+        setAdvice('');
+        setCategory('General');
+        // Close the form
+        onClose();
+      } catch (error) {
+        console.error('Error submitting advice:', error);
+        // You might want to show an error message to the user here
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  }, [advice, category, onAddAdvice, onClose]);
+
+  useEffect(() => {
+    return () => {
+      // This cleanup function will run when the component unmounts
+      setIsSubmitting(false);
+    };
+  }, []);
 
   return (
     <div className={styles.shareAdviceOverlay}>
@@ -27,37 +48,21 @@ const ShareAdvice = ({ onSubmit, onClose }) => {
             onChange={(e) => setAdvice(e.target.value)}
             placeholder="Enter your advice here..."
             className={styles.shareAdviceTextarea}
-            required
           />
-          <div className={styles.categorySelection}>
-            <label htmlFor="category" className={styles.categoryLabel}>Choose a category:</label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className={styles.categorySelect}
-              required
-            >
-              <option value="">Select a category</option>
-              {predefinedCategories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-              <option value="custom">Create custom category</option>
-            </select>
-          </div>
-          {category === 'custom' && (
-            <input
-              type="text"
-              value={customCategory}
-              onChange={(e) => setCustomCategory(e.target.value)}
-              placeholder="Enter custom category"
-              className={styles.customCategoryInput}
-              required
-            />
-          )}
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className={styles.categorySelect}
+          >
+            <option value="General">General</option>
+            <option value="Career">Career</option>
+            <option value="Relationships">Relationships</option>
+            <option value="Health">Health</option>
+            {/* Add more categories as needed */}
+          </select>
           <div className={styles.shareAdviceButtons}>
-            <button type="submit" className={styles.shareAdviceButton}>
-              Share Advice
+            <button type="submit" className={styles.shareAdviceButton} disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit Advice'}
             </button>
             <button type="button" onClick={onClose} className={styles.shareAdviceCloseButton}>
               Cancel
