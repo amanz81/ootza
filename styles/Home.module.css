@@ -90,8 +90,8 @@
 }
 
 .cardCategory {
-  font-size: 2.8rem;  /* Increased from previous size */
-  margin-bottom: 1rem;
+  font-size: 1.8rem;  /* Decreased from 2.8rem */
+  margin-bottom: 0.5rem;  /* Decreased from 1rem */
   color: #4a90e2;
   font-weight: 700;
   text-transform: uppercase;
@@ -99,7 +99,7 @@
 }
 
 .card p {
-  font-size: 2rem;  /* Slightly reduced from 2.8rem for better contrast with category */
+  font-size: 1.6rem;  /* Slightly decreased from 2rem */
   line-height: 1.4;
   color: #555;
   flex-grow: 1;

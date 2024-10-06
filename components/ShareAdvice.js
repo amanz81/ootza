@@ -58,7 +58,12 @@ const ShareAdvice = ({ onAddAdvice, onClose }) => {
             <option value="Career">Career</option>
             <option value="Relationships">Relationships</option>
             <option value="Health">Health</option>
-            {/* Add more categories as needed */}
+            <option value="Finance">Finance</option>
+            <option value="Education">Education</option>
+            <option value="Personal Growth">Personal Growth</option>
+            <option value="Technology">Technology</option>
+            <option value="Travel">Travel</option>
+            <option value="Hobbies">Hobbies</option>
           </select>
           <div className={styles.shareAdviceButtons}>
             <button type="submit" className={styles.shareAdviceButton} disabled={isSubmitting}>
