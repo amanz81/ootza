@@ -49,7 +49,7 @@ export default function Home() {
       const newAdviceRef = push(adviceRef);
       const adviceWithMetadata = {
         ...newAdvice,
-        text: newAdvice.content, // Add this line to ensure consistency
+        text: newAdvice.content,
         createdAt: Date.now(),
         likes: 0
       };
@@ -76,7 +76,7 @@ export default function Home() {
     }
   };
 
-  const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt).slice(0, 20);
+  const latestAdvice = [...advice].sort((a, b) => b.createdAt - a.createdAt);
   const topAdvice = [...advice].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 5);
 
   console.log('Rendering with advice:', advice);
