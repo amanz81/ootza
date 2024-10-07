@@ -87,6 +87,9 @@ export default function Home() {
         <h1 className={styles.title}>
           <span className={styles.welcomeText}>Welcome to</span> <span className={styles.ootzaText}>Ootza!</span>
         </h1>
+        <h2 className={styles.subtitle}>
+          Advice, Ideas and Inspirations Thought
+        </h2>
 
         {showShareAdvice && (
           <ShareAdvice 

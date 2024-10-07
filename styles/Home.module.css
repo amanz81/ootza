@@ -588,3 +588,16 @@
   justify-content: space-between;
   margin-top: 20px;
 }
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 1.5rem;  /* Increased from 1.2rem to 1.5rem */
+  margin-top: 0.5rem;
+  font-weight: normal;
+  font-family: 'Varela Round', sans-serif;  /* Added a specific font-family */
+  max-width: 80%;  /* Added to ensure the subtitle doesn't stretch too wide */
+  margin-left: auto;  /* Center the subtitle */
+  margin-right: auto;  /* Center the subtitle */
+  line-height: 1.4;  /* Added for better readability */
+}
